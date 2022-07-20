@@ -12,5 +12,12 @@
     },
     "ignorePatterns": ["**/database/models/index.js"],
     "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_",
+          "ignoreRestSiblings": true
+        }
+      ]
     }
 }
