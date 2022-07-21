@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
+    "prestart": "npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dbCreate": "npx sequelize db:create",
-    "migrateAll": "npx sequelize db:migrate",
+    "dbDrop": "npx sequelize db:drop",
+    "migrateAll": "npx sequelize db:migrate:all",
     "migrateUndoAll": "npx sequelize db:migrate:undo:all",
     "seedAll": "npx sequelize db:seed:all",
     "seedUndoAll": "npx sequelize db:seed:undo:all"
