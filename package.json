@@ -7,9 +7,10 @@
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dbCreate": "npx sequelize db:create",
-    "migrate": "npx sequelize db:migrate",
+    "migrateAll": "npx sequelize db:migrate",
+    "migrateUndoAll": "npx sequelize db:migrate:undo:all",
     "seedAll": "npx sequelize db:seed:all",
-    "unseed": "npx sequelize db:seed:undo:all"
+    "seedUndoAll": "npx sequelize db:seed:undo:all"
   },
   "keywords": [],
   "author": "",
