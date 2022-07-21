@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
     }
 
     const refreshToken = refreshJWT(user);
-    req.headers.authorization.token = refreshToken;
+    req.headers.authorization = refreshToken;
 
     return next();
   } catch (err) {
