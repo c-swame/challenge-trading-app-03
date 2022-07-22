@@ -9,9 +9,17 @@ module.exports = {
       },
       codCliente: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'codCliente',
+        },
       },
       codAtivo: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Ativos',
+          key: 'codAtivo',
+        },
       },
       quantidade: {
         type: Sequelize.INTEGER,
