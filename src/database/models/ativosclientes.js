@@ -13,8 +13,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   AtivosClientes.init(
     {
-      codCliente: DataTypes.NUMBER,
-      codAtivo: DataTypes.NUMBER,
+      codCliente: DataTypes.INTEGER,
+      codAtivo: DataTypes.INTEGER,
+      quantidade: {
+        type: DataTypes.INTEGER,
+        validate: {
+          min: 0,
+        },
+      },
     },
     {
       sequelize,
