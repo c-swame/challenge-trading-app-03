@@ -19,13 +19,22 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      QtdeAtivo: DataTypes.NUMBER,
-      Valor: DataTypes.DECIMAL,
+      QtdeAtivo: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
+        validate: {
+          min: 0,
+        },
+      },
+      Valor: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+          min: 0,
+        },
+      },
       criadoEm: DataTypes.DATE,
       atualizadoEm: DataTypes.DATE,
-      validate: {
-        min: 0,
-      },
     },
     {
       sequelize,
