@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dbCreate": "npx sequelize db:create",
     "dbDrop": "npx sequelize db:drop",
-    "migrateAll": "npx sequelize db:migrate:all",
+    "migrateAll": "npx sequelize db:migrate",
     "migrateUndoAll": "npx sequelize db:migrate:undo:all",
     "seedAll": "npx sequelize db:seed:all",
     "seedUndoAll": "npx sequelize db:seed:undo:all"
