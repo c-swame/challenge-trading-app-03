@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     // }
   }
   User.init({
-    codeClient: {
+    codCliente: {
       type: DataTypes.STRING,
       primaryKey: true,
       autoIncrement: true,
