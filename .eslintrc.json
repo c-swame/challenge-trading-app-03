@@ -3,15 +3,33 @@
         "es2021": true,
         "node": true
     },
+
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "plugin:mocha/recommended"
     ],
+
+    "plugins": [
+        "mocha"
+    ],
+
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+
     "ignorePatterns": ["**/database/models/index.js"],
+
+    "settings": {
+    "mocha/additionalCustomNames": [
+        { "name": "describeModule", "type": "suite", "interfaces": [ "BDD" ] },
+        { "name": "testModule", "type": "testCase", "interfaces": [ "TDD" ] }
+      ]
+    },
+
     "rules": {
+      "mocha/no-skipped-tests": "error",
+      "mocha/no-exclusive-tests": "error",
       "no-unused-vars": [
         "error",
         {

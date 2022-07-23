@@ -7,8 +7,9 @@
     "start": "node .",
     "dev": "nodemon src/index.js",
     "prestart": "npx sequelize db:create && npx sequelize db:migrate",
-    "pretest": "npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "pre:test": "NODE_ENV=test npx sequelize db:create && NODE_ENV=test npx sequelize db:migrate && NODE_ENV=test npx sequelize db:seed:all && NODE_ENV=dev",
+    "test": "NODE_ENV=test mocha src/tests/**/*$NAME*.test.js --exit && NODE_ENV=dev",
+    "post:test": "NODE_ENV=test npm run dbDrop && NODE_ENV=dev",
     "dbCreate": "npx sequelize db:create",
     "dbDrop": "npx sequelize db:drop",
     "migrateAll": "npx sequelize db:migrate",
@@ -29,9 +30,14 @@
     "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
+    "chai": "^4.3.6",
     "eslint": "^8.20.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "nodemon": "^2.0.19"
+    "eslint-plugin-mocha": "^10.1.0",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.19",
+    "sinon": "^14.0.0",
+    "sinon-chai": "^3.7.0"
   }
 }

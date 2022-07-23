@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     // }
   }
   User.init({
-    codeClient: {
+    codCliente: {
       type: DataTypes.STRING,
       primaryKey: true,
       autoIncrement: true,
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-    tableName: 'Users',
+    tableName: 'Clientes',
     timestamps: false,
   });
   return User;
