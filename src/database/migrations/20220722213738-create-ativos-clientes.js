@@ -13,6 +13,8 @@ module.exports = {
           model: 'Clientes',
           key: 'codCliente',
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       codAtivo: {
         type: Sequelize.INTEGER,
