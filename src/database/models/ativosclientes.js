@@ -12,11 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         through: AtivosClientes,
         foreignKey: 'codAtivo',
         otherKey: 'codCliente',
+        as: 'ativos',
       });
       models.Ativos.belongsToMany(models.User, {
         through: AtivosClientes,
         foreignKey: 'codCliente',
         otherKey: 'codAtivo',
+        as: 'clientes',
       });
     }
   }
