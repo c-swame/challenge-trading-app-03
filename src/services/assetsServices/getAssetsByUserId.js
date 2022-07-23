@@ -6,7 +6,7 @@ SELECT ac.codCliente, ac.codAtivo, ac.quantidade qtdeAtivo, a.Valor FROM trading
 JOIN trading_app_dev.Ativos as a
 ON ac.codAtivo = a.codAtivo
 WHERE codCliente = :userId;
-  `
+  `;
 
   const [userAssets] = mockTest.modelReturn || await sequelize.query(query, {
     replacements: { userId },
