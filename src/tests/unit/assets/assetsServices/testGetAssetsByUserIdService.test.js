@@ -12,16 +12,18 @@ describe(`test the getProductById.js function when it recives
 a valid data from controller and from model`, async () => {
   const mockTest = {
     modelReturn: [
-    {
+    [{
       codCliente: 2,
       codAtivo: 2,
       quantidade: 2,
+      valor: 100.00,
     },
     {
       codCliente: 2,
       codAtivo: 1,
       quantidade: 1,
-    },
+      valor: 75.50,
+    }],
   ],
 };
 
@@ -30,11 +32,13 @@ a valid data from controller and from model`, async () => {
       codCliente: 2,
       codAtivo: 2,
       quantidade: 2,
+      valor: 100.00,
     },
     {
       codCliente: 2,
       codAtivo: 1,
       quantidade: 1,
+      valor: 75.50,
     },
   ];
 
