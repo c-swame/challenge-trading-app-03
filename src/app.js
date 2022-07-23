@@ -8,6 +8,6 @@ app.use(express.json());
 
 app.use(appRoutes);
 
-app.use('/', (_req, resp) => resp.send('<p>Bem vindo à api trading app!!</p>'));
+app.get('/', (_req, resp) => resp.send('<p>Bem vindo à api trading app!!</p>'));
 
 module.exports = app;
