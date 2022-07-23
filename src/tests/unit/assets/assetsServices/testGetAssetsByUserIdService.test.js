@@ -1,15 +1,11 @@
-const sinon = require('sinon');
 const { expect, use } = require('chai');
 const sinonChai = require("sinon-chai");
-
-const statusCode = require('../../../../utils/statusCode');
 
 use(sinonChai);
 
 const { getAssetsByUserId } = require('../../../../services/assetsServices');
 
-describe(`test the getProductById.js function when it recives
-a valid data from controller and from model`, async () => {
+describe(`test the getAssetsByUderId service when it recives a valid data`, async () => {
   const mockTest = {
     modelReturn: [
     [{
