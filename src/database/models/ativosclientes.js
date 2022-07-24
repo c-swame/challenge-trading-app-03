@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       codCliente: DataTypes.INTEGER,
       codAtivo: DataTypes.INTEGER,
-      quantidade: {
+      qtdeAtivo: {
         type: DataTypes.INTEGER,
         validate: {
           min: 0,

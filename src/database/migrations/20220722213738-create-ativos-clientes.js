@@ -23,7 +23,7 @@ module.exports = {
           key: 'codAtivo',
         },
       },
-      quantidade: {
+      qtdeAtivo: {
         type: Sequelize.INTEGER,
       },
     });
