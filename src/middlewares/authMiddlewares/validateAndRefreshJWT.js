@@ -11,6 +11,9 @@ const segredo = process.env.JWT_SECRET;
 module.exports = async (req, res, next) => {
   const { authorization: token } = req.headers;
 
+  req.codCliente = undefined;
+  req.isAdmin = undefined;
+
   if (!token) {
     return res.status(HttpsStatus.UNAUTHORIZED).json({ message: 'Token not found' });
   }
@@ -18,7 +21,9 @@ module.exports = async (req, res, next) => {
   try {
     const tokenPayload = jwt.verify(token, segredo);
 
-    const user = await User.findByPk(tokenPayload.codCliente);
+    const user = await User.findByPk(tokenPayload.codCliente, {
+      attributes: { exclude: ['password', 'passwordHash'] },
+    });
 
     if (!user) {
       return res
@@ -27,6 +32,8 @@ module.exports = async (req, res, next) => {
     }
 
     const refreshToken = refreshJWT(user);
+    req.codCliente = user.codCliente;
+    req.isAdmin = user.admin;
     req.headers.authorization = refreshToken;
 
     return next();
