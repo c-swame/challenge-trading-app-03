@@ -75,9 +75,10 @@ module.exports = (sequelize, DataTypes) => {
       if (transacao.codOperacao === 'compra' || transacao.codOperacao === 'saque') {
         // eslint-disable-next-line no-param-reassign
         transacao['entrada/saida'] = 'saida';
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        transacao['entrada/saida'] = 'entrada';
       }
-      // eslint-disable-next-line no-param-reassign
-      transacao['entrada/saida'] = 'entrada';
     }
   });
 
