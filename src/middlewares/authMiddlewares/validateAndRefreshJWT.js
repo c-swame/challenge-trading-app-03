@@ -32,7 +32,7 @@ module.exports = async (req, res, next) => {
     }
 
     const refreshToken = refreshJWT(user);
-    req.codCliente = user.codCliente;
+    req.tokenCodCliente = user.codCliente;
     req.isAdmin = user.admin;
     req.headers.authorization = refreshToken;
 
