@@ -27,6 +27,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      qtdeAtivo: {
+        type: Sequelize.INTEGER,
+      },
       valor: {
         type: Sequelize.DECIMAL(50, 2),
         allowNull: false,
