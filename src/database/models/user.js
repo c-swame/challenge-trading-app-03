@@ -2,6 +2,8 @@ const {
   Model,
 } = require('sequelize');
 
+const handlePasswordCrypto = require('../../auth/utils/handlePasswordCrypto');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -38,7 +40,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false,
     },
-    passwordHash: DataTypes.STRING,
+    passwordHash: {
+      type: DataTypes.STRING,
+    },
     password: {
       type: DataTypes.VIRTUAL,
       validate: {
@@ -53,5 +57,13 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Clientes',
     timestamps: false,
   });
+
+  User.addHook('beforeSave', async (user) => {
+    if (user.password) {
+      // eslint-disable-next-line no-param-reassign
+      user.passwordHash = handlePasswordCrypto.encrypt(user.password);
+    }
+  });
+
   return User;
 };

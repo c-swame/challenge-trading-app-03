@@ -25,6 +25,4 @@ const decrypt = (dataHash) => {
 // metodo tem que ser melhorado de forma que a senha de duas pessoas diferentes,
 //   ainda que iguais não tenham o mesmo hash .-.
 
-console.log(encrypt('qwertyas'));
-
 module.exports = { encrypt, decrypt };

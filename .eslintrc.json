@@ -30,6 +30,13 @@
     "rules": {
       "mocha/no-skipped-tests": "error",
       "mocha/no-exclusive-tests": "error",
+      "max-len": [
+        "error",
+        {
+          "code": 100,
+          "ignoreComments": true
+        }
+      ],
       "no-unused-vars": [
         "error",
         {
