@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Transacoes.init({
-    codTansacao: {
+    codtransacao: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
@@ -42,11 +42,17 @@ module.exports = (sequelize, DataTypes) => {
         isIn: [['compra', 'venda', 'deposito', 'saque']],
       },
     },
+    qtdeAtivo: {
+      type: DataTypes.INTEGER,
+      validate: {
+        min: 1,
+      },
+    },
     valor: {
       type: DataTypes.DECIMAL(50, 2),
       allowNull: false,
       validate: {
-        min: 0.00,
+        min: 0,
       },
     },
     'entrada/saida': {
@@ -64,14 +70,23 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
   });
 
-  Transacoes.addHook('beforeSave', async (tansacao) => {
-    if (tansacao.codOperacao) {
-      if (tansacao.codOperacao === 'compra' || tansacao.codOperacao === 'saque') {
+  Transacoes.addHook('beforeSave', async (transacao) => {
+    if (transacao.codOperacao) {
+      if (transacao.codOperacao === 'compra' || transacao.codOperacao === 'saque') {
         // eslint-disable-next-line no-param-reassign
-        tansacao['entrada/saida'] = 'saida';
+        transacao['entrada/saida'] = 'saida';
       }
       // eslint-disable-next-line no-param-reassign
-      tansacao['entrada/saida'] = 'entrada';
+      transacao['entrada/saida'] = 'entrada';
+    }
+  });
+
+  Transacoes.addHook('beforeSave', async (transacao) => {
+    if (transacao.codOperacao === 'saque' || transacao.codOperacao === 'deposito') {
+      // eslint-disable-next-line no-param-reassign
+      transacao.qtdeAtivo = null;
+    } else if (transacao.qtdeAtivo < 1) {
+      throw new Error('a qtdeAtivos deve ser maior ou igual a "1" para esse tipo de operação');
     }
   });
 
