@@ -37,5 +37,6 @@
           "ignoreRestSiblings": true
         }
       ]
-    }
+    },
+    "ignoreComments": true
 }
