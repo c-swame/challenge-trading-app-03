@@ -11,7 +11,7 @@ const segredo = process.env.JWT_SECRET;
 module.exports = async (req, res, next) => {
   const { authorization: token } = req.headers;
 
-  req.codCliente = undefined;
+  req.tokenUserId = undefined;
   req.isAdmin = undefined;
 
   if (!token) {
@@ -32,7 +32,7 @@ module.exports = async (req, res, next) => {
     }
 
     const refreshToken = refreshJWT(user);
-    req.tokenCodCliente = user.codCliente;
+    req.tokenUserId = user.codCliente;
     req.isAdmin = user.admin;
     req.headers.authorization = refreshToken;
 
