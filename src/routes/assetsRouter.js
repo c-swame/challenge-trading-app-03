@@ -9,5 +9,6 @@ const validateAdminOrOwnerPermission = require(
 const router = express.Router({ mergeParams: true });
 
 router.get('/clientes/:userId', validateAdminOrOwnerPermission, assetsController.getAssetsByUserId);
+router.get('/:assetId', assetsController.getAssetsById);
 
 module.exports = router;
