@@ -1,14 +1,9 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('AtivosClientes', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
       codCliente: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
         references: {
           model: 'Clientes',
           key: 'codCliente',
@@ -17,13 +12,14 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       codAtivo: {
+        primaryKey: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Ativos',
           key: 'codAtivo',
         },
       },
-      quantidade: {
+      qtdeAtivo: {
         type: Sequelize.INTEGER,
       },
     });
