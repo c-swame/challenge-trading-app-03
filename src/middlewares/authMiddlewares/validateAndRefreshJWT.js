@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
   try {
     const tokenPayload = jwt.verify(token, segredo);
 
-    const user = await User.findByPk(tokenPayload.id);
+    const user = await User.findByPk(tokenPayload.codCliente);
 
     if (!user) {
       return res
@@ -31,6 +31,6 @@ module.exports = async (req, res, next) => {
 
     return next();
   } catch (err) {
-    return res.status(HttpsStatus.UNAUTHORIZED).json({ message: 'Expired or invalid token' });
+    return next(err);
   }
 };
