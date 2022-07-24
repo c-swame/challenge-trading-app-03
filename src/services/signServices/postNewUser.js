@@ -23,14 +23,14 @@ module.exports = async (newUserData, mockTest = {}) => {
   const newUser = mockTest.modelReturn || await User.create(normalizedData);
 
   const {
-    codCliente, admin, nome, email, telefone, saldo, cpf, criadoEm,
+    codCliente, admin, nome, email, telefone, saldo, cpf,
   } = newUser;
 
-  const newUserToken = mockTest.jwtReturn || creatToken({ codCliente, admin, criadoEm });
+  const newUserToken = mockTest.jwtReturn || creatToken({ codCliente, admin });
 
   return {
     data: {
-      codCliente, admin, nome, email, telefone, saldo, cpf, criadoEm,
+      codCliente, admin, nome, email, telefone, saldo, cpf,
     },
     token: newUserToken,
   };
