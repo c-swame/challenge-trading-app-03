@@ -9,8 +9,10 @@ module.exports = async (transactionData, mockTest = {}) => {
 
   const userData = await User.findByPk(codCliente);
 
+  if (+userData.saldo < +valor) throw new Error('saldo indisponível');
+
   const [depositData] = mockTest.modelReturn || await User.update(
-    { saldo: (+userData.saldo + +valor), codOperacao: 'deposito' },
+    { saldo: (+userData.saldo - +valor), codOperacao: 'saque' },
     { where: { codCliente } },
   );
 
