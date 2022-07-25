@@ -39,6 +39,7 @@ npm seedAll
 As seguintes tecnologias foram selecionadas considerando buscando agilizar a produção e levando em conta a competência com as tecnologias e adequação com o desenvolvimento de uma API. Além de serém tecnologias bastante difundidadas no mercado em com alta confiabilidade.
 
 * Node.js;
+* Git, GitHub, GitActions;
 * JavaScript;
 * Sequelize (biblioteca ORM);
 * MySql;
