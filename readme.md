@@ -67,3 +67,64 @@ Além disso, ferramentas externas, como o 'joi', o 'jasonwebtoken' e 'http-statu
 
 Após a leitura dos requisitos mínimos os primeiros passo foram estruturar o esquema para o banco de dados e organizar a sequencia em que as tabelas deveriam ser criadas a fim de evitar conflitos e poder fazer entregas que fossem executaveis no menor prazor possível.
 
+
+# rotas
+
+## get /users
+```
+[
+	{
+		"codCliente": 1,
+		"nome": "user1",
+		"email": "email1@email.com",
+		"telefone": "9999999999",
+		"saldo": "320.00",
+		"cpf": "123.456.789-01",
+		"admin": false,
+		"criadoEm": "2022-07-25T02:20:45.000Z",
+		"atualizadoEm": "2022-07-25T02:20:45.000Z"
+	},
+	{
+		"codCliente": 2,
+		"nome": "user2",
+		"email": "email2@email.com",
+		"telefone": null,
+		"saldo": "222222.22",
+		"cpf": "123.456.789-02",
+		"admin": false,
+		"criadoEm": "2022-07-25T02:20:45.000Z",
+		"atualizadoEm": "2022-07-25T02:20:45.000Z"
+	},
+.
+.
+.
+  ]
+```
+
+## get ativos/:assetId
+```
+{
+	"data": {
+		"codAtivo": 1,
+		"QtdeAtivo": 100,
+		"Valor": "75.50"
+	},
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjozLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTY1ODcxNzY4NywiZXhwIjoxNjU4NzE5NDg3fQ.LZqe00zgDoYydZcbj18Dt8uEjvwupr8zV8eNGaKuVso"
+}
+```
+## get ativos/clientes/2
+
+outras rotas, mas não deu tempo de colocar .-. foi mal
+```
+
+```
+
+
+```
+```
+
+```
+```
+
+```
+```
