@@ -2,7 +2,7 @@ const { sequelize } = require('../../database/models');
 
 module.exports = async (userId, mockTest = {}) => {
   const query = `
-SELECT ac.codCliente, ac.codAtivo, ac.quantidade qtdeAtivo, a.Valor
+SELECT ac.codCliente, ac.codAtivo, ac.qtdeAtivo qtdeAtivo, a.Valor
 FROM trading_app_dev.AtivosClientes as ac
 JOIN trading_app_dev.Ativos as a
 ON ac.codAtivo = a.codAtivo

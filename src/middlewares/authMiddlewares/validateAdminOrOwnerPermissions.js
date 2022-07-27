@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    if (userId === tokenUserId || isAdmin) {
+    if (+userId === +tokenUserId || isAdmin) {
       return next();
     }
 
