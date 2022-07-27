@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         models.Transacoes,
         { foreignKey: 'codAtivo', as: 'transacoes' },
       );
+
+      Ativos.hasMany(
+        models.User,
+        { foreignKey: 'codCliente', as: 'clientes' },
+      );
     }
   }
   Ativos.init(
