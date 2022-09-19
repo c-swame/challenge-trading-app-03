@@ -1,16 +1,32 @@
-const { sequelize } = require('../../database/models');
+const { AtivosClientes, Ativos } = require('../../database/models');
 
-module.exports = async (userId, mockTest = {}) => {
-  const query = `
-SELECT ac.codCliente, ac.codAtivo, ac.quantidade qtdeAtivo, a.Valor
-FROM trading_app_dev.AtivosClientes as ac
-JOIN trading_app_dev.Ativos as a
-ON ac.codAtivo = a.codAtivo
-WHERE codCliente = :userId;
-  `;
+module.exports = async (userId, mockTest = {}) => { // adicionar offset e pageAmount aos possíveis parâmetros e indicar a partir de onde deve iniciar e quantos retornos devem ter. Ajuda a vizualização do dado no front, eu acho;
+  const userAssets = mockTest.modelReturn || await AtivosClientes.findAll(
+    {
+      where: { codCliente: userId },
+      include: [
+        {
+          model: Ativos,
+          as: 'ativo',
+          attributes: ['Valor'],
+        },
+      ],
+    },
+  );
 
-  const [userAssets] = mockTest.modelReturn || await sequelize.query(query, {
-    replacements: { userId },
-  });
-  return userAssets;
+  const userData = userAssets.map(({
+    codCliente,
+    codAtivo,
+    qtdeAtivo,
+    ativo: { Valor },
+  }) => (
+    {
+      CodCliente: codCliente,
+      CodAtivo: codAtivo,
+      QtdeAtivo: qtdeAtivo,
+      Valor,
+    }
+  ));
+
+  return userData;
 };

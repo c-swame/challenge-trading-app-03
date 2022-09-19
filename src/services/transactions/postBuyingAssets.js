@@ -3,70 +3,68 @@ const {
   AtivosClientes,
   Ativos,
   User,
+  sequelize,
 } = require('../../database/models');
 
 module.exports = async (transactionData, mockTest = {}) => {
-  const { codCliente, codAtivo, qtdeAtivo } = transactionData;
+  const buyingAssetsTransaction = await sequelize.transaction();
+  // const { codAtivo, codCliente, qtdeAtivo } = transactionData;
+  try {
+    Ativos.update(
+      { QtdeAtivo: sequelize.literal(`QtdeAtivo - ${transactionData.qtdeAtivo}`) },
+      {
+        where: { codAtivo: transactionData.codAtivo },
+        transaction: buyingAssetsTransaction,
+      },
+    );
 
-  const { dataValues: assetData } = await Ativos.findByPk(codAtivo);
-  const { dataValues: userData } = (await User.findByPk(codCliente));
+    // ------
 
-  const expense = (assetData.Valor * qtdeAtivo);
+    const assetData = await Ativos.findByPk(transactionData.codAtivo, { raw: true });
 
-  if (assetData.QtdeAtivo < qtdeAtivo) {
-    throw new Error(`quantidade ativos máxima: ${assetData.QtdeAtivo}`);
-  } else if (expense > userData.saldo) {
-    throw new Error(`saldo insuficiente. Valor unitário do ativo: ${assetData.Valor}`);
-  }
+    User.update(
+      { saldo: sequelize.literal(`saldo - ${transactionData.qtdeAtivo * assetData.Valor}`) },
+      { where: { codCliente: transactionData.codCliente }, transaction: buyingAssetsTransaction },
+    );
 
-  await Ativos.update(
-    { QtdeAtivo: (assetData.QtdeAtivo - qtdeAtivo) },
-    { where: { codAtivo } },
-  );
+    // ------
 
-  await User.update(
-    { saldo: (userData.saldo - expense) },
-    { where: { codCliente } },
-  );
+    const userAssetsPreviousData = (
+      await AtivosClientes.findAll({
+        raw: true,
+        where: {
+          codCliente: transactionData.codCliente,
+          codAtivo: transactionData.codAtivo,
+        },
+      })
+    )[0];
 
-  const AtivoClientPrev = (
-    await AtivosClientes.findAll({ where: { codCliente, codAtivo } })
-  )[0];
+    const userAssetsNewQuantity = userAssetsPreviousData.qtdeAtivo
+      ? userAssetsPreviousData.qtdeAtivo + transactionData.qtdeAtivo
+      : transactionData.qtdeAtivo;
 
-  if (AtivoClientPrev) {
-    await AtivosClientes.update({
-      qtdeAtivo: (qtdeAtivo + AtivoClientPrev.dataValues.qtdeAtivo),
-    }, {
-      where: { codCliente, codAtivo },
-    });
-  } else {
-    await AtivosClientes.create({
-      codCliente,
-      codAtivo,
-      qtdeAtivo,
+    AtivosClientes.upsert({
+      codCliente: transactionData.codCliente,
+      codAtivo: transactionData.codAtivo,
+      qtdeAtivo: userAssetsNewQuantity,
       codOperacao: 'compra',
-    });
+    }, { transaction: buyingAssetsTransaction });
+
+    // ------
+
+    const transaction = mockTest.modelReturn || await Transacoes
+      .create({
+        codCliente: transactionData.codCliente,
+        codAtivo: transactionData.codAtivo,
+        qtdeAtivo: transactionData.qtdeAtivo,
+        valor: (transactionData.qtdeAtivo * assetData.Valor),
+        codOperacao: 'compra',
+      }, { transaction: buyingAssetsTransaction });
+    await buyingAssetsTransaction.commit();
+    return transaction;
+  } catch (err) {
+    await buyingAssetsTransaction.rollback();
+    console.log('*** error', err.message);
+    throw err;
   }
-
-  /*
-    Essa validação foi feita aqui para evitar uma outra requisição e reduzir o tempo entre essa validação e a requisição ao banco de dados;
-      Apesar disso, será transformada em um middleware para evitar boilerplate code ou talvez apensa criar uma função auxiliar onde se deve passar os models os dados/chaves a verificar e o tipo de transação;
-      acredito que deixar a validação na camada de service pode não ser muito adequado para o projeto, considerando que as demais validações estão nos middlewares;
-  */
-
-  /*
-    Usar seqelizer.query para trazer os dados primarios desejados e assim evitar tantas requisições para validar os dados.
-      Parte disso ocorreu apenas porque o hook "beforeUpsert" Não funciona corretamente quando se usa chave primária composta. Tentar rever isso também!!!
-  */
-
-  const transaction = mockTest.modelReturn || await Transacoes
-    .create({
-      codCliente,
-      codAtivo,
-      qtdeAtivo,
-      valor: expense,
-      codOperacao: 'compra',
-    });
-  // !!!!!!!!!!!!! Fazer o rollback em caso de falha!!!! usar o sequelize.transactions
-  return transaction;
 };
