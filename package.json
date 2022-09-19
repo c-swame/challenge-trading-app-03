@@ -15,7 +15,8 @@
     "migrateAll": "npx sequelize db:migrate",
     "migrateUndoAll": "npx sequelize db:migrate:undo:all",
     "seedAll": "npx sequelize db:seed:all",
-    "seedUndoAll": "npx sequelize db:seed:undo:all"
+    "seedUndoAll": "npx sequelize db:seed:undo:all",
+    "lint": "npx lint ."
   },
   "keywords": [],
   "author": "",
