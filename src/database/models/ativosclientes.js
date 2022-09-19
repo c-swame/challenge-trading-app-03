@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         through: AtivosClientes,
         foreignKey: 'codAtivo',
         otherKey: 'codCliente',
-        as: 'ativos',
+        as: 'ativo',
       });
-      AtivosClientes.belongsToMany(models.User, {
+      AtivosClientes.belongsTo(models.User, {
         through: AtivosClientes,
         foreignKey: 'codCliente',
         otherKey: 'codAtivo',
-        as: 'clientes',
+        as: 'cliente',
       });
     }
   }

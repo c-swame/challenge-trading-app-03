@@ -7,7 +7,7 @@ module.exports = async (userId, mockTest = {}) => { // adicionar offset e pageAm
       include: [
         {
           model: Ativos,
-          as: 'ativos',
+          as: 'ativo',
           attributes: ['Valor'],
         },
       ],
@@ -18,7 +18,7 @@ module.exports = async (userId, mockTest = {}) => { // adicionar offset e pageAm
     codCliente,
     codAtivo,
     qtdeAtivo,
-    ativos: { Valor },
+    ativo: { Valor },
   }) => (
     {
       CodCliente: codCliente,
