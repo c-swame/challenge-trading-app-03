@@ -15,7 +15,6 @@ module.exports = async (transactionData, mockTest = {}) => {
       {
         where: { codAtivo: transactionData.codAtivo },
         transaction: buyingAssetsTransaction,
-        instance: Ativos,
       },
     );
 
