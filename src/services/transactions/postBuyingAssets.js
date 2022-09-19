@@ -6,8 +6,16 @@ const {
   sequelize,
 } = require('../../database/models');
 
+const WARNING_TIMOUT_MS = 20; // Qual a latência maxima pra um sistema desse tipo? https://www.instaclustr.com/blog/building-a-low-latency-distributed-stock-broker-application-part-3/
+
 module.exports = async (transactionData, mockTest = {}) => {
-  const buyingAssetsTransaction = await sequelize.transaction();
+  const buyingAssetsTransaction = await sequelize.transaction({
+    benchmark: true,
+    logging: ((_id, time, _options) => {
+      console.log('***Time: ', time);
+      if (time > WARNING_TIMOUT_MS) console.log('alerta para manutenção ou averiguação'); // !!!!!!! A IMPLEMENTAR
+    }),
+  });
   // const { codAtivo, codCliente, qtdeAtivo } = transactionData;
   try {
     Ativos.update(
