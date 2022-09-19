@@ -3,59 +3,77 @@ const {
   AtivosClientes,
   Ativos,
   User,
+  sequelize,
 } = require('../../database/models');
 
+const WARNING_TIMOUT_MS = 20;
+
 module.exports = async (transactionData, mockTest = {}) => {
-  const { codCliente, codAtivo, qtdeAtivo } = transactionData;
-
-  const { dataValues: assetData } = await Ativos.findByPk(codAtivo);
-  const { dataValues: userData } = (await User.findByPk(codCliente));
-  const [ativoClientPrev] = (
-    await AtivosClientes.findAll({ where: { codCliente, codAtivo } })
-  );
-
-  const profits = (assetData.Valor * qtdeAtivo);
-  if (ativoClientPrev.qtdeAtivo < qtdeAtivo) {
-    throw new Error(`
-    Quantidade ativos insuficiente. Ativos disponíveis: ${ativoClientPrev.qtdeAtivo}
-    `);
-  }
-
-  await Ativos.update(
-    { QtdeAtivo: (assetData.QtdeAtivo + qtdeAtivo) },
-    { where: { codAtivo } },
-  );
-
-  await User.update(
-    { saldo: (+userData.saldo + +profits) },
-    { where: { codCliente } },
-  );
-
-  await AtivosClientes.update({
-    qtdeAtivo: (ativoClientPrev.qtdeAtivo - qtdeAtivo),
-  }, {
-    where: { codCliente, codAtivo },
+  const sellingAssetsTransaction = await sequelize.transaction({
+    benchmark: true,
+    logging: ((_id, time, _options) => {
+      console.log('***Time: ', time);
+      if (time > WARNING_TIMOUT_MS) console.log('alerta para manutenção ou averiguação'); // !!!!!!! A IMPLEMENTAR
+    }),
   });
 
-  /*
-    Essa validação foi feita aqui para evitar uma outra requisição e reduzir o tempo entre essa validação e a requisição ao banco de dados;
-      Apesar disso, será transformada em um middleware para evitar boilerplate code ou talvez apensa criar uma função auxiliar onde se deve passar os models os dados/chaves a verificar e o tipo de transação;
-      acredito que deixar a validação na camada de service pode não ser muito adequado para o projeto, considerando que as demais validações estão nos middlewares;
-  */
+  // const { codCliente, codAtivo, qtdeAtivo } = transactionData;
+  try {
+    Ativos.update(
+      { QtdeAtivo: sequelize.literal(`QtdeAtivo + ${transactionData.qtdeAtivo}`) },
+      {
+        where: { codAtivo: transactionData.codAtivo },
+        transaction: sellingAssetsTransaction,
+      },
+    );
 
-  /*
-    Usar seqelizer.query para trazer os dados primarios desejados e assim evitar tantas requisições para validar os dados.
-      Parte disso ocorreu apenas porque o hook "beforeUpsert" Não funciona corretamente quando se usa chave primária composta. Tentar rever isso também!!!
-  */
+    // ------
 
-  const transaction = mockTest.modelReturn || await Transacoes
-    .create({
-      codCliente,
-      codAtivo,
-      qtdeAtivo,
-      valor: profits,
+    const assetData = await Ativos.findByPk(transactionData.codAtivo, { raw: true });
+
+    User.update(
+      { saldo: sequelize.literal(`saldo + ${transactionData.qtdeAtivo * assetData.Valor}`) },
+      { where: { codCliente: transactionData.codCliente }, transaction: sellingAssetsTransaction },
+    );
+
+    // ------
+
+    const userAssetsPreviousData = (
+      await AtivosClientes.findAll({
+        raw: true,
+        where: {
+          codCliente: transactionData.codCliente,
+          codAtivo: transactionData.codAtivo,
+        },
+      })
+    )[0];
+
+    const userAssetsNewQuantity = userAssetsPreviousData.qtdeAtivo
+      ? userAssetsPreviousData.qtdeAtivo - transactionData.qtdeAtivo
+      : transactionData.qtdeAtivo;
+
+    AtivosClientes.upsert({
+      codCliente: transactionData.codCliente,
+      codAtivo: transactionData.codAtivo,
+      qtdeAtivo: userAssetsNewQuantity,
       codOperacao: 'venda',
-    });
-  // !!!!!!!!!!!!! Fazer o rollback em caso de falha!!!! usar o sequelize.transactions
-  return transaction;
+    }, { transaction: sellingAssetsTransaction });
+
+    // ------
+
+    const transaction = mockTest.modelReturn || await Transacoes
+      .create({
+        codCliente: transactionData.codCliente,
+        codAtivo: transactionData.codAtivo,
+        qtdeAtivo: transactionData.qtdeAtivo,
+        valor: (transactionData.qtdeAtivo * assetData.Valor),
+        codOperacao: 'venda',
+      }, { transaction: sellingAssetsTransaction });
+    await sellingAssetsTransaction.commit();
+    return transaction;
+  } catch (err) {
+    await sellingAssetsTransaction.rollback();
+    console.log('*** error', err.message);
+    throw err;
+  }
 };
