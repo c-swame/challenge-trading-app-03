@@ -18,6 +18,8 @@ module.exports = async (transactionData, mockTest = {}) => {
       },
     );
 
+    // ------
+
     const assetData = await Ativos.findByPk(transactionData.codAtivo, { raw: true });
 
     User.update(
@@ -25,12 +27,30 @@ module.exports = async (transactionData, mockTest = {}) => {
       { where: { codCliente: transactionData.codCliente }, transaction: buyingAssetsTransaction },
     );
 
+    // ------
+
+    const userAssetsPreviousData = (
+      await AtivosClientes.findAll({
+        raw: true,
+        where: {
+          codCliente: transactionData.codCliente,
+          codAtivo: transactionData.codAtivo,
+        },
+      })
+    )[0];
+
+    const userAssetsNewQuantity = userAssetsPreviousData.qtdeAtivo
+      ? userAssetsPreviousData.qtdeAtivo + transactionData.qtdeAtivo
+      : transactionData.qtdeAtivo;
+
     AtivosClientes.upsert({
       codCliente: transactionData.codCliente,
       codAtivo: transactionData.codAtivo,
-      qtdeAtivo: transactionData.qtdeAtivo,
+      qtdeAtivo: userAssetsNewQuantity,
       codOperacao: 'compra',
     }, { transaction: buyingAssetsTransaction });
+
+    // ------
 
     const transaction = mockTest.modelReturn || await Transacoes
       .create({
