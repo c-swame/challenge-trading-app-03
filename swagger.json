@@ -1,0 +1,698 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Trading-App Api",
+    "description": "Documentation from Trading-App Api",
+    "version": "0.3.1",
+    "contact": {
+      "email": "caio_swame@hotmail.com"
+    }
+  },
+  "basePath": "/",
+
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "UserReturn": {
+        "type": "object",
+        "properties": {
+          "codClient": {
+            "type": "number"
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Busca todos os usuários",
+        "description": "Rota buscar dados de todos os usuários",
+        "tags": ["Users"],
+
+        "responses": {
+          "200": {
+            "description": "OK <hr /> array contendo todos usuários cadastrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "codClient": {
+                            "type": "number"
+                          },
+                          "admin": {
+                            "type": "boolean"
+                          },
+                          "nome": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "telefone": {
+                            "type": "string"
+                          },
+                          "cpf": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "codCliente": 1,
+                      "nome": "user1",
+                      "email": "email1@email.com",
+                      "telefone": "9999999999",
+                      "saldo": "1000.00",
+                      "cpf": "123.456.789-01",
+                      "admin": false,
+                      "criadoEm": "2022-07-27T13:41:51.000Z",
+                      "atualizadoEm": "2022-07-27T13:41:51.000Z"
+                    },
+                    {
+                      "codCliente": 2,
+                      "nome": "user2",
+                      "email": "email2@email.com",
+                      "telefone": "9999999999",
+                      "saldo": "2000.00",
+                      "cpf": "223.456.789-02",
+                      "admin": false,
+                      "criadoEm": "2022-07-27T13:41:51.000Z",
+                      "atualizadoEm": "2022-07-27T13:41:51.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/sign/up": {
+      "post": {
+        "description": "Rota para cadastro de novos usuários",
+        "summary": "Cadastra um novo usuário",
+        "tags": ["Sign"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome do usuário",
+                    "required": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Email do usuário. Será utilizado para fazer o login futuramente."
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "required": true,
+                    "description": "CPF do usuário. Será utilizado para fazer o login futuramente e em validações."
+                  },
+                  "telefone": {
+                    "type": "string/number",
+                    "required": false,
+                    "description": "Telefone para contato"
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Senha do usuário"
+                  }
+                },
+                "example": {
+                  "nome": "user25",
+                  "email": "email25@email.com",
+                  "telefone": "parametro não obrigatório. apagar ou adicionar um telefone",
+                  "cpf": "123.456.789-25",
+                  "password": "senhaaa25"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created. <hr /> Conjuto de dados do usuário.<br /><br /> Úteis para auxilar no redirecionamento e renderização de algumas informações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/UserReturn"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codCliente": 25,
+                      "admin": false,
+                      "nome": "user25",
+                      "email": "email25@email.com",
+                      "telefone": "caso um telefone tenha sido adicionado, retornará aqui",
+                      "cpf": "123.456.789-25"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjozMCwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2MjQyMzQsImV4cCI6MjYxMDM1MjIzNH0.aTJywn4qpvuTDK0ckY15AmeVwSweWIXB8Eq-igsEMmc"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/ativos/{assetId}": {
+      "get": {
+        "description": "Busca dados de uma ação pelo seu id",
+        "summary": "Busca ação pelo id",
+        "tags": ["Assets"],
+        "security": [{"bearerAuth": []}],
+  
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assetId",
+            "required": true
+          }
+        ],
+  
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "codAtivo": {
+                          "type": "number"
+                        },
+                        "QtdeAtivo": {
+                          "type": "number"
+                        },
+                        "Valor": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codAtivo": 1,
+                      "QtdeAtivo": 95,
+                      "Valor": "75.50"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjozLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTY1ODkyOTc0NCwiZXhwIjoxNjU4OTMxNTQ0fQ.h_nzvPMHgablpIMpqbw_-f9t2y9uDdsQIyrGhdULFJI"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/ativos/clientes/{userId}": {
+      "get": {
+        "description": "Busca dados das ações de um cliente <br /><br /> *Obs: o token da requisição deve ser o de uma pessoa adm ou da pessoa dona da conta buscada",
+        "summary": "Busca ação pelo id do cliente",
+        "tags": ["Assets", "Users"],
+        "security": [{"bearerAuth": []}],
+  
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true
+          }
+        ],
+  
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "codCliente": {
+                            "type": "number"
+                          },
+                          "codAtivo": {
+                            "type": "number"
+                          },
+                          "QtdeAtivo": {
+                            "type": "number"
+                          },
+                          "Valor": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": [
+                      {
+                        "CodCliente": 25,
+                        "CodAtivo": 1,
+                        "QtdeAtivo": 0,
+                        "Valor": "75.50"
+                      },
+                      {
+                        "CodCliente": 25,
+                        "CodAtivo": 2,
+                        "QtdeAtivo": 4,
+                        "Valor": "100.00"
+                      }
+                    ],
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzEyMDcsImV4cCI6MjYxMDM5OTIwN30.xBUirLjkwzAm4MxYTdcj38voGYY6sTv_zIND1whLL7I"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/conta/{codCliente}": {
+      "get": {
+        "summary": "Busca usuário pelo id",
+        "description": "Rota buscar dados de um único usuário pelo seu id",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "codCliente",
+            "type": "number",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK <hr /> Objeto contendo dados do usuário pesquisado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "codClient": {
+                      "type": "number"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "nome": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "telefone": {
+                      "type": "string"
+                    },
+                    "cpf": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "codCliente": 25,
+                    "nome": "user24",
+                    "email": "email24@email.com",
+                    "telefone": null,
+                    "saldo": "150267.50",
+                    "cpf": "123.456.789-24",
+                    "admin": false,
+                    "criadoEm": "2022-09-18T10:02:55.000Z",
+                    "atualizadoEm": "2022-09-18T10:02:55.000Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/conta/deposito": {
+      "post": {
+        "description": "faz um deposito",
+        "summary": "faz um deposito",
+        "tags": ["Transactions"],
+        "security": [{"bearerAuth": []}],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codCliente": {
+                    "type": "number"
+                  },
+                  "valor": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "codCliente":25,
+                  "valor":80000
+                }
+              }
+            }
+          },
+          "required": true
+        },
+
+        "responses": {
+          "202": {
+            "description": "Accepted <br /> Retorna um novo token de acesso e, na chave data, 1 em caso de sucesso ou 0 em caso de falha",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "number"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": 1,
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzEyMDcsImV4cCI6MjYxMDM5OTIwN30.xBUirLjkwzAm4MxYTdcj38voGYY6sTv_zIND1whLL7I"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/conta/saque": {
+      "post": {
+        "description": "faz um saque",
+        "summary": "faz um saque",
+        "tags": ["Transactions"],
+        "security": [{"bearerAuth": []}],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codCliente": {
+                    "type": "number"
+                  },
+                  "valor": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "codCliente":25,
+                  "valor":2000
+                }
+              }
+            }
+          },
+          "required": true
+        },
+
+        "responses": {
+          "202": {
+            "description": "Accepted <br /> Retorna um novo token de acesso e, na chave data, 1 em caso de sucesso ou 0 em caso de falha",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "number"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": 1,
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzEyMDcsImV4cCI6MjYxMDM5OTIwN30.xBUirLjkwzAm4MxYTdcj38voGYY6sTv_zIND1whLL7I"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/investimentos/vender": {
+      "post": {
+        "summary": "vende ações",
+        "description": "vende ações caso o usuário as possua e estejam disponíveis. O dono da requisição deve ser o mesmo agente da venda",
+        "tags": ["Transactions"],
+        "security": [{"bearerAuth": []}],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codCliente": {
+                    "type": "number"
+                  },
+                  "codAtivo": {
+                    "type": "number"
+                  },
+                  "qtdeAtivo": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "codCliente":25,
+                  "codAtivo":1,
+                  "qtdeAtivo":2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+
+        "responses": {
+          "202": {
+            "description": "Accepted <br /><br /> dados da transação, incluindo o ganho total, e token",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "codtransacao":{
+                          "type": "number"
+                        },
+                        "codCliente":{
+                          "type": "number"
+                        },
+                        "codAtivo":{
+                          "type": "number"
+                        },
+                        "qtdeAtivo":{
+                          "type": "number"
+                        },
+                        "valor":{
+                          "type": "number"
+                        },
+                        "codOperacao":{
+                          "type": "string"
+                          },
+                        "entrada/saida":{
+                          "type": "string"
+                          }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codtransacao": 63,
+                      "codCliente": 25,
+                      "codAtivo": 2,
+                      "qtdeAtivo": 2,
+                      "valor": 200,
+                      "codOperacao": "venda",
+                      "entrada/saida": "entrada"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2MDQwNDUsImV4cCI6MjYxMDMzMjA0NX0.5PHlAFQc8tSpp0OW-rzO3XEgUE84-LuR32elpRV1TAE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/investimentos/comprar": {
+      "post": {
+        "summary": "comprar ações",
+        "description": "compra ações caso o usuário as possua saldo e as ações estejam disponíveis. <br /> O dono da requisição deve ser o mesmo agente da compra",
+        "tags": ["Transactions"],
+        "security": [{"bearerAuth": []}],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codCliente": {
+                    "type": "number"
+                  },
+                  "codAtivo": {
+                    "type": "number"
+                  },
+                  "qtdeAtivo": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "codCliente":25,
+                  "codAtivo":1,
+                  "qtdeAtivo":2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+
+        "responses": {
+          "202": {
+            "description": "Accepted <br /><br /> dados da transação, incluindo o ganho total, e token",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "codtransacao":{
+                          "type": "number"
+                        },
+                        "codCliente":{
+                          "type": "number"
+                        },
+                        "codAtivo":{
+                          "type": "number"
+                        },
+                        "qtdeAtivo":{
+                          "type": "number"
+                        },
+                        "valor":{
+                          "type": "number"
+                        },
+                        "codOperacao":{
+                          "type": "string"
+                          },
+                        "entrada/saida":{
+                          "type": "string"
+                          }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codtransacao": 65,
+                      "codCliente": 25,
+                      "codAtivo": 2,
+                      "qtdeAtivo": 2,
+                      "valor": 200,
+                      "codOperacao": "compra",
+                      "entrada/saida": "saida"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzYzMzQsImV4cCI6MjYxMDQwNDMzNH0.hZ0LV1qkHyTaMa3MAxKM3lFoeJzF2674R5SJdGDsiMk"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

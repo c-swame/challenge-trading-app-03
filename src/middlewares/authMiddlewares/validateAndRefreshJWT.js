@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
   }
 
   try {
-    const tokenPayload = jwt.verify(token, segredo);
+    const tokenPayload = jwt.verify(token.replace('Bearer ', ''), segredo);
 
     const user = await User.findByPk(tokenPayload.codCliente, {
       attributes: { exclude: ['password', 'passwordHash'] },
