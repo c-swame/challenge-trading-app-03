@@ -115,3 +115,86 @@
       }
     },
 
+    "/sign/up": {
+      "post": {
+        "description": "Rota para cadastro de novos usuários",
+        "summary": "Cadastra um novo usuário",
+        "tags": ["Sign"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome do usuário",
+                    "required": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Email do usuário. Será utilizado para fazer o login futuramente."
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "required": true,
+                    "description": "CPF do usuário. Será utilizado para fazer o login futuramente e em validações."
+                  },
+                  "telefone": {
+                    "type": "string/number",
+                    "required": false,
+                    "description": "Telefone para contato"
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Senha do usuário"
+                  }
+                },
+                "example": {
+                  "nome": "user25",
+                  "email": "email25@email.com",
+                  "telefone": "parametro não obrigatório. apagar ou adicionar um telefone",
+                  "cpf": "123.456.789-25",
+                  "password": "senhaaa25"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created. <hr /> Conjuto de dados do usuário.<br /><br /> Úteis para auxilar no redirecionamento e renderização de algumas informações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/UserReturn"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codCliente": 25,
+                      "admin": false,
+                      "nome": "user25",
+                      "email": "email25@email.com",
+                      "telefone": "caso um telefone tenha sido adicionado, retornará aqui",
+                      "cpf": "123.456.789-25"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjozMCwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2MjQyMzQsImV4cCI6MjYxMDM1MjIzNH0.aTJywn4qpvuTDK0ckY15AmeVwSweWIXB8Eq-igsEMmc"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
