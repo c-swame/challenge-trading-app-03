@@ -601,3 +601,98 @@
       }
     },
 
+
+    "/investimentos/comprar": {
+      "post": {
+        "summary": "comprar ações",
+        "description": "compra ações caso o usuário as possua saldo e as ações estejam disponíveis. <br /> O dono da requisição deve ser o mesmo agente da compra",
+        "tags": ["Transactions"],
+        "security": [{"bearerAuth": []}],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codCliente": {
+                    "type": "number"
+                  },
+                  "codAtivo": {
+                    "type": "number"
+                  },
+                  "qtdeAtivo": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "codCliente":25,
+                  "codAtivo":1,
+                  "qtdeAtivo":2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+
+        "responses": {
+          "202": {
+            "description": "Accepted <br /><br /> dados da transação, incluindo o ganho total, e token",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "codtransacao":{
+                          "type": "number"
+                        },
+                        "codCliente":{
+                          "type": "number"
+                        },
+                        "codAtivo":{
+                          "type": "number"
+                        },
+                        "qtdeAtivo":{
+                          "type": "number"
+                        },
+                        "valor":{
+                          "type": "number"
+                        },
+                        "codOperacao":{
+                          "type": "string"
+                          },
+                        "entrada/saida":{
+                          "type": "string"
+                          }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codtransacao": 65,
+                      "codCliente": 25,
+                      "codAtivo": 2,
+                      "qtdeAtivo": 2,
+                      "valor": 200,
+                      "codOperacao": "compra",
+                      "entrada/saida": "saida"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzYzMzQsImV4cCI6MjYxMDQwNDMzNH0.hZ0LV1qkHyTaMa3MAxKM3lFoeJzF2674R5SJdGDsiMk"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
