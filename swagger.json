@@ -256,3 +256,75 @@
       }
     },
 
+
+    "/ativos/clientes/{userId}": {
+      "get": {
+        "description": "Busca dados das ações de um cliente <br /><br /> *Obs: o token da requisição deve ser o de uma pessoa adm ou da pessoa dona da conta buscada",
+        "summary": "Busca ação pelo id do cliente",
+        "tags": ["Assets", "Users"],
+        "security": [{"bearerAuth": []}],
+  
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true
+          }
+        ],
+  
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "codCliente": {
+                            "type": "number"
+                          },
+                          "codAtivo": {
+                            "type": "number"
+                          },
+                          "QtdeAtivo": {
+                            "type": "number"
+                          },
+                          "Valor": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": [
+                      {
+                        "CodCliente": 25,
+                        "CodAtivo": 1,
+                        "QtdeAtivo": 0,
+                        "Valor": "75.50"
+                      },
+                      {
+                        "CodCliente": 25,
+                        "CodAtivo": 2,
+                        "QtdeAtivo": 4,
+                        "Valor": "100.00"
+                      }
+                    ],
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzEyMDcsImV4cCI6MjYxMDM5OTIwN30.xBUirLjkwzAm4MxYTdcj38voGYY6sTv_zIND1whLL7I"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
