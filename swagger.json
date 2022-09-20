@@ -198,3 +198,61 @@
       }
     },
 
+
+    "/ativos/{assetId}": {
+      "get": {
+        "description": "Busca dados de uma ação pelo seu id",
+        "summary": "Busca ação pelo id",
+        "tags": ["Assets"],
+        "security": [{"bearerAuth": []}],
+  
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assetId",
+            "required": true
+          }
+        ],
+  
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "codAtivo": {
+                          "type": "number"
+                        },
+                        "QtdeAtivo": {
+                          "type": "number"
+                        },
+                        "Valor": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codAtivo": 1,
+                      "QtdeAtivo": 95,
+                      "Valor": "75.50"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjozLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTY1ODkyOTc0NCwiZXhwIjoxNjU4OTMxNTQ0fQ.h_nzvPMHgablpIMpqbw_-f9t2y9uDdsQIyrGhdULFJI"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
