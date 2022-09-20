@@ -1,0 +1,44 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Trading-App Api",
+    "description": "Documentation from Trading-App Api",
+    "version": "0.3.1",
+    "contact": {
+      "email": "caio_swame@hotmail.com"
+    }
+  },
+  "basePath": "/",
+
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "UserReturn": {
+        "type": "object",
+        "properties": {
+          "codClient": {
+            "type": "number"
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+
