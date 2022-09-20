@@ -507,3 +507,97 @@
       }
     },
 
+
+    "/investimentos/vender": {
+      "post": {
+        "summary": "vende ações",
+        "description": "vende ações caso o usuário as possua e estejam disponíveis. O dono da requisição deve ser o mesmo agente da venda",
+        "tags": ["Transactions"],
+        "security": [{"bearerAuth": []}],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codCliente": {
+                    "type": "number"
+                  },
+                  "codAtivo": {
+                    "type": "number"
+                  },
+                  "qtdeAtivo": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "codCliente":25,
+                  "codAtivo":1,
+                  "qtdeAtivo":2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+
+        "responses": {
+          "202": {
+            "description": "Accepted <br /><br /> dados da transação, incluindo o ganho total, e token",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "codtransacao":{
+                          "type": "number"
+                        },
+                        "codCliente":{
+                          "type": "number"
+                        },
+                        "codAtivo":{
+                          "type": "number"
+                        },
+                        "qtdeAtivo":{
+                          "type": "number"
+                        },
+                        "valor":{
+                          "type": "number"
+                        },
+                        "codOperacao":{
+                          "type": "string"
+                          },
+                        "entrada/saida":{
+                          "type": "string"
+                          }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": {
+                      "codtransacao": 63,
+                      "codCliente": 25,
+                      "codAtivo": 2,
+                      "qtdeAtivo": 2,
+                      "valor": 200,
+                      "codOperacao": "venda",
+                      "entrada/saida": "entrada"
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2MDQwNDUsImV4cCI6MjYxMDMzMjA0NX0.5PHlAFQc8tSpp0OW-rzO3XEgUE84-LuR32elpRV1TAE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
