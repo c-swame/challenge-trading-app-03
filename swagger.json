@@ -448,3 +448,62 @@
       }
     },
 
+
+    "/conta/saque": {
+      "post": {
+        "description": "faz um saque",
+        "summary": "faz um saque",
+        "tags": ["Transactions"],
+        "security": [{"bearerAuth": []}],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codCliente": {
+                    "type": "number"
+                  },
+                  "valor": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "codCliente":25,
+                  "valor":2000
+                }
+              }
+            }
+          },
+          "required": true
+        },
+
+        "responses": {
+          "202": {
+            "description": "Accepted <br /> Retorna um novo token de acesso e, na chave data, 1 em caso de sucesso ou 0 em caso de falha",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "number"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "data": 1,
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzEyMDcsImV4cCI6MjYxMDM5OTIwN30.xBUirLjkwzAm4MxYTdcj38voGYY6sTv_zIND1whLL7I"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
