@@ -42,3 +42,76 @@
     }
   },
 
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Busca todos os usuários",
+        "description": "Rota buscar dados de todos os usuários",
+        "tags": ["Users"],
+
+        "responses": {
+          "200": {
+            "description": "OK <hr /> array contendo todos usuários cadastrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "codClient": {
+                            "type": "number"
+                          },
+                          "admin": {
+                            "type": "boolean"
+                          },
+                          "nome": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "telefone": {
+                            "type": "string"
+                          },
+                          "cpf": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "codCliente": 1,
+                      "nome": "user1",
+                      "email": "email1@email.com",
+                      "telefone": "9999999999",
+                      "saldo": "1000.00",
+                      "cpf": "123.456.789-01",
+                      "admin": false,
+                      "criadoEm": "2022-07-27T13:41:51.000Z",
+                      "atualizadoEm": "2022-07-27T13:41:51.000Z"
+                    },
+                    {
+                      "codCliente": 2,
+                      "nome": "user2",
+                      "email": "email2@email.com",
+                      "telefone": "9999999999",
+                      "saldo": "2000.00",
+                      "cpf": "223.456.789-02",
+                      "admin": false,
+                      "criadoEm": "2022-07-27T13:41:51.000Z",
+                      "atualizadoEm": "2022-07-27T13:41:51.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
