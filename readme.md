@@ -6,7 +6,7 @@
   Challenge-trading-app-03 é uma api desenvolvida (em desenvolvimento .-.)
   para gerir o back-end de uma empresa de finanças, contando com endpoints para cadastro de usuários, compra e venda de ativos, execução de depositos e buscar clientes cadastrados
 
-## Como posso testar usar api?
+## Como executar a aplicação:
 
   O primeiro passo é fazer o clone desse repositório!
   Após isso basta:
@@ -30,7 +30,9 @@ e
 ```
 npm seedAll
 ```
-  Esse comando irá criar o banco de dados e as tabelas e povoar o banco de dos.
+  Esse comando irá criar o banco de dados e as tabelas e povoar o banco de dados.
+  
+  Agora basta acessar a rota ```localhost:<porta_configurada_no_.env>/docs``` e testar com a documentação Swagger ou testar com alguma ferramenta como o postman ou insomnia.
 
 # Desenvolvimento
 
@@ -46,6 +48,7 @@ As seguintes tecnologias foram selecionadas considerando buscando agilizar a pro
 * MySql2;
 * Express;
 * JWT;
+* Swagger
 * Joi (validação de dados);
 * http-status-codes
 * Eslint;
@@ -67,8 +70,21 @@ Além disso, ferramentas externas, como o 'joi', o 'jasonwebtoken' e 'http-statu
 
 Após a leitura dos requisitos mínimos os primeiros passo foram estruturar o esquema para o banco de dados e organizar a sequencia em que as tabelas deveriam ser criadas a fim de evitar conflitos e poder fazer entregas que fossem executaveis no menor prazor possível.
 
+## Features:
+- [x] Criar uma lista de ações que passe às informações para Front-End (inclusive as informações da quantidade investida em cada ação).
+- [x] Criar uma rota de login para verificar se um usuário existe no banco de dados para assim gerar o Token do JWT.
+- [x] Requisição de compra de Ativos.
+- [x] Requisição de venda de Ativos.
+- [x] Listar todos os ativos de uma pessoa cliente.
+- [x] Listar todas as informações de um ativo, pelo seu id.
+- [x] Realizar um saque da conta de um cliente.
+- [x] Realizar um depósito da conta de um cliente.
+- [x] Retornar o valor do saldo de um cliente pelo seu id.
+
 
 # rotas
+
+![image da documentação](https://raw.githubusercontent.com/c-swame/challenge-trading-app-03/main/Screenshot%20from%202022-09-29%2019-46-29.png)
 
 ## get /users
 ```
