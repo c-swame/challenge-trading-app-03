@@ -86,6 +86,39 @@ Após a leitura dos requisitos mínimos os primeiros passo foram estruturar o es
 
 ![image da documentação](https://raw.githubusercontent.com/c-swame/challenge-trading-app-03/main/Screenshot%20from%202022-09-29%2019-46-29.png)
 
+
+## post /sign/up
+
+```
+{
+	"data": {
+		"codCliente": 2,
+		"admin": false,
+		"nome": "user2",
+		"email": "email2@email.com",
+		"cpf": "123.456.789-05"
+	},
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjo1LCJhZG1pbiI6ZmFsc2UsImlhdCI6MTY1ODkyOTUwMiwiZXhwIjoxNjU4OTMxMzAyfQ.zhEQsFOz9sfJNsbtdkXVNm1a-guZuQ6in-3LlkrkmL8"
+}
+```
+
+
+## get /conta/:userId
+
+```
+{
+	"codCliente": 2,
+	"nome": "user2",
+	"email": "email2@email.com",
+	"telefone": null,
+	"saldo": "150267.50",
+	"cpf": "123.456.789-02",
+	"admin": false,
+	"criadoEm": "2022-09-18T10:02:55.000Z",
+	"atualizadoEm": "2022-09-18T10:02:55.000Z"
+}
+```
+
 ## get /users
 ```
 [
@@ -128,19 +161,82 @@ Após a leitura dos requisitos mínimos os primeiros passo foram estruturar o es
 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjozLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTY1ODcxNzY4NywiZXhwIjoxNjU4NzE5NDg3fQ.LZqe00zgDoYydZcbj18Dt8uEjvwupr8zV8eNGaKuVso"
 }
 ```
-## get ativos/clientes/2
-
-outras rotas, mas não deu tempo de colocar .-. foi mal
-```
-
-```
 
 
-```
-```
+## get ativos/clientes/:userId
 
 ```
+
+{
+	"data": [
+		{
+			"CodCliente": 25,
+			"CodAtivo": 1,
+			"QtdeAtivo": 0,
+			"Valor": "75.50"
+		},
+		{
+			"CodCliente": 25,
+			"CodAtivo": 2,
+			"QtdeAtivo": 4,
+			"Valor": "100.00"
+		}
+	],
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzEyMDcsImV4cCI6MjYxMDM5OTIwN30.xBUirLjkwzAm4MxYTdcj38voGYY6sTv_zIND1whLL7I"
+}
 ```
 
+## post conta/deposito
 ```
+{
+	"data": 1,
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM0OTUzNzUsImV4cCI6MjYxMDIyMzM3NX0.FBtN-BZf1j891r0JyPc8W4c7TM87z-LlRg06MuD9Zog"
+}
 ```
+
+
+## post conta/deposito
+
+```
+{
+	"data": 1,
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjozLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTY1ODYzOTQ2MX0.P9migI6F8dMoKxBvXvBKURHmlfjLUpSSxU8xbbmSLmk"
+}
+```
+
+## post /investimentos/comprar
+```
+{
+	"data": {
+		"codtransacao": 65,
+		"codCliente": 25,
+		"codAtivo": 2,
+		"qtdeAtivo": 2,
+		"valor": 200,
+		"codOperacao": "compra",
+		"entrada/saida": "saida"
+	},
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2NzYzMzQsImV4cCI6MjYxMDQwNDMzNH0.hZ0LV1qkHyTaMa3MAxKM3lFoeJzF2674R5SJdGDsiMk"
+}
+```
+
+
+## post /investimentos/vender
+```
+{
+	"data": {
+		"codtransacao": 63,
+		"codCliente": 25,
+		"codAtivo": 2,
+		"qtdeAtivo": 2,
+		"valor": 200,
+		"codOperacao": "venda",
+		"entrada/saida": "entrada"
+	},
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RDbGllbnRlIjoyNSwiYWRtaW4iOmZhbHNlLCJpYXQiOjE2NjM2MDQwNDUsImV4cCI6MjYxMDMzMjA0NX0.5PHlAFQc8tSpp0OW-rzO3XEgUE84-LuR32elpRV1TAE"
+}
+```
+# Implementações futuras:
+- Tratar CPF como dado sensível;
+- Rota para consultar movimentações mensais ou dentro de um dado período pelo id do usuário;
+- Rota para pegar um resumo das movimentações totais da empresa dentro de um período (possibilidade de filtar pelo tipo de operação e por empresa, em caso de movimentações de compra ou venda de ativos);
