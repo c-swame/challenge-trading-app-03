@@ -86,6 +86,7 @@ Após a leitura dos requisitos mínimos os primeiros passo foram estruturar o es
 
 ![image da documentação](https://raw.githubusercontent.com/c-swame/challenge-trading-app-03/main/Screenshot%20from%202022-09-29%2019-46-29.png)
 
+Para mais informações consultar o swagger. Caso a imagem não carregue abaixo estão as rotas e o retorno esperado de cada rota.
 
 ## post /sign/up
 
@@ -237,6 +238,7 @@ Após a leitura dos requisitos mínimos os primeiros passo foram estruturar o es
 }
 ```
 # Implementações futuras:
+- Adicionar dados esperados no request de cada rota .-.
 - Tratar CPF como dado sensível;
 - Rota para consultar movimentações mensais ou dentro de um dado período pelo id do usuário;
 - Rota para pegar um resumo das movimentações totais da empresa dentro de um período (possibilidade de filtar pelo tipo de operação e por empresa, em caso de movimentações de compra ou venda de ativos);
