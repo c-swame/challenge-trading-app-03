@@ -1,5 +1,12 @@
 # Challenge-trading-app-03 
   
+  - [Sobre](#sobre)
+  - [Como executar a aplicação](#como-executar-a-aplicação)
+  - [Tecnologias utilizadas](#tecnologias-utilizadas)
+  - [Funcionalidades](#features)
+  - [Rotas](#rotas)
+  - [Implementações futuras](#implementações-futuras)
+
 
 ## Sobre
 
@@ -36,7 +43,7 @@ npm seedAll
 
 # Desenvolvimento
 
-## tecnologias utilizadas:
+## Tecnologias utilizadas:
 
 As seguintes tecnologias foram selecionadas considerando buscando agilizar a produção e levando em conta a competência com as tecnologias e adequação com o desenvolvimento de uma API. Além de serém tecnologias bastante difundidadas no mercado em com alta confiabilidade.
 
